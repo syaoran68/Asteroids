@@ -1,0 +1,16 @@
+
+MSVC\+\+v16 (2019) Solution Space/.vs/
+
+MSVC\+\+v16 (2019) Solution Space/
+
+Makefile
+
+*.sh
+
+*.lnk
+
+.clang-tidy
+
+.clang-format
+
+SourceCode/.vscode/
