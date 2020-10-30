@@ -14,3 +14,5 @@ Makefile
 .clang-format
 
 SourceCode/.vscode/
+
+*.7z
