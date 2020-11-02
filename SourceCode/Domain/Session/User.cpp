@@ -66,28 +66,19 @@ namespace Domain::User
 
   std::any UserBase::executeCommand( const std::string & command, const std::vector<std::string> & args )
   {
-    std::string parameters;
-    for( const auto & arg : args )  parameters += '"' + arg + "\"  ";
-    _logger << "Responding to \"" + command + "\" request with parameters: " + parameters;
+      if (command == "Buy Game")
+      {
+        //STUB()
+      }
+      else if (command == "Play Game")
+      {
 
-    auto it = _commandDispatch.find( command );
-    if( it == _commandDispatch.end() )
-    {
-      std::string message = __func__;
-      message += " attempt to execute \"" + command + "\" failed, no such command";
+      }
+      else if( command == "Generate Report" )
+      {
 
-      _logger << message;
-      throw BadCommand( message );
-    }
-
-    auto results = it->second( *this, args);
-
-    if( results.has_value() )
-    {
-      // The type of result depends on function called.  Let's assume strings for now ...
-      _logger << "Responding with: \"" + std::any_cast<const std::string &>( results ) + '"';
-    }
-
+      }
+      std::string results = "testing";
     return results;
   }
 

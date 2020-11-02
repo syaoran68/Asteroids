@@ -37,27 +37,24 @@ namespace Domain::User
     try
     {
       auto &          persistentData    = TechnicalServices::Persistence::PersistenceHandler::instance();
-      UserCredentials credentialsFromDB = persistentData.findCredentialsByName( credentials.userName );
+      
+      // normally we'd do this but we're gonna skip looking into the database for now
+
+      //UserCredentials credentialsFromDB = persistentData.findCredentialsByName( credentials.userName );
 
       // 1)  Perform the authentication
       // std::set_intersection might be a better choice, but here I'm assuming there will be one and only one role in the passed-in
       // credentials I just need to verify the requested role is in the set of authorized roles.  Someday, if a user can sign in
       // with many roles combined, I may have to revisit this approach.  But for now, this is good enough.
-      if(    credentials.userName   == credentialsFromDB.userName
-          && credentials.passPhrase == credentialsFromDB.passPhrase
-          && std::any_of( credentialsFromDB.roles.cbegin(), credentialsFromDB.roles.cend(),
-                          [&]( const std::string & role ) { return credentials.roles.size() > 0 && credentials.roles[0] == role; }
-                        )
-        )
-      {
+      
         // 2) If authenticated user is authorized for the selected role, create a session specific for that role
         //if( credentials.roles[0] == "Borrower"      ) return std::make_unique<Domain::User::BorrowerSession>     ( credentials );
         //if( credentials.roles[0] == "Librarian"     ) return std::make_unique<Domain::User::LibrarianSession>    ( credentials );
         if( credentials.roles[0] == "Administrator" ) return std::make_unique<Domain::User::AdministratorSession>( credentials );
-        //if( credentials.roles[0] == "Management"    ) return std::make_unique<Domain::User::ManagementSession>   ( credentials );
+        if( credentials.roles[0] == "Player"    ) return std::make_unique<Domain::User::PlayerSession>   ( credentials );
 
         throw std::logic_error( "Invalid role requested in function " + std::string(__func__) ); // Oops, should never get here but ...  Throw something
-      }
+     
     }
     catch( const TechnicalServices::Persistence::PersistenceHandler::NoSuchUser & ) {}  // Catch and ignore this anticipated condition
 

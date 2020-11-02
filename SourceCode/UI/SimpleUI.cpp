@@ -8,11 +8,11 @@
 #include <string>      // string, getline()
 #include <vector>
 
-#include "../Domain/Library/Books.hpp"    // Include for now - will replace next increment
-#include "../Domain/Session/UserHandler.hpp"
+#include "Domain/Library/Books.hpp"    // Include for now - will replace next increment
+#include "Domain/Session/UserHandler.hpp"
 
-#include "../TechnicalServices/Logging/LoggerHandler.hpp"
-#include "../TechnicalServices/Persistence/PersistenceHandler.hpp"
+#include "TechnicalServices/Logging/LoggerHandler.hpp"
+#include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 
 
 
@@ -58,10 +58,10 @@ namespace UI
     {
       std::cin.ignore(  std::numeric_limits<std::streamsize>::max(), '\n' );
 
-      std::cout << "  name: ";
+      std::cout << "  UserName: ";
       std::getline( std::cin, credentials.userName );
 
-      std::cout << "  pass phrase: ";
+      std::cout << "  Password: ";
       std::getline( std::cin, credentials.passPhrase );
 
       unsigned menuSelection;
@@ -117,21 +117,33 @@ namespace UI
       **     no coupling. This can be achieved in a variety of ways, but one common way is to pass strings instead of strong typed
       **     parameters.
       ******************************************************************************************************************************/
-      if( selectedCommand == "Checkout Book" )
+      if( selectedCommand == "Buy Game" )
       {
-        std::vector<std::string> parameters( 3 );
+        std::vector<std::string> parameters( 6 );
 
-        std::cout << " Enter book's title:  ";  std::cin >> std::ws;  std::getline( std::cin, parameters[0] );
-        std::cout << " Enter book's author: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[1] );
-        std::cout << " Enter book's ISBN:   ";  std::cin >> std::ws;  std::getline( std::cin, parameters[2] );
+        std::cout << " First Name: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[0] );
+        std::cout << " Last Name: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[1] );
+        std::cout << " Credit Card Number: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[2] );
+        std::cout << " Credit Card Expire Month: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[3] );
+        std::cout << " Credit Card Expire Year: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[4] );
+        std::cout << " Address: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[5] );
+
+        
 
         auto results = sessionControl->executeCommand( selectedCommand, parameters );
         if( results.has_value() ) _logger << "Received reply: \"" + std::any_cast<const std::string &>( results ) + '"';
       }
+      else if (selectedCommand == "Play Game")
+      {
 
-      else if( selectedCommand == "Another command" ) /* ... */ {}
+      }
+      else if( selectedCommand == "Generate Report" )
+      {
 
+      }
       else sessionControl->executeCommand( selectedCommand, {} );
+
+
     } while( true );
 
     _logger << "Ending session and terminating";
