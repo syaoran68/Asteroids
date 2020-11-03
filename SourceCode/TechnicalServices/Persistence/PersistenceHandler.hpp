@@ -18,6 +18,22 @@ namespace TechnicalServices::Persistence
     std::vector<std::string>  roles;
   };
 
+  struct PaymentCredentials
+  {
+    std::string firstName;
+    std::string lastName;
+    int         creditCardNumber;
+    int         expMonth;
+    int         expYear;
+    std::string address;
+  };
+
+
+  struct PaymentTransaction
+  {
+    int transactionID;
+    PaymentCredentials paymentData;
+  };
 
 
 

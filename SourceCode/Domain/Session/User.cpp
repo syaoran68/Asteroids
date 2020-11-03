@@ -68,32 +68,33 @@ namespace Domain::User
   {
       if (command == "Buy Game")
       {
-        //STUB()
+        // send to external payment system
+        
       }
       else if (command == "Play Game")
       {
-
+        // stub for launching the game
+        std::cout << "play game";
       }
       else if( command == "Generate Report" )
       {
-
+        // stub generating report
+        std::cout << "generate report";
       }
       std::string results = "testing";
     return results;
   }
 
-
-
-
-
-
-
-
   // 2) Now map the above system events to roles authorized to make such a request.  Many roles can request the same event, and many
   //    events can be requested by a single role.
   AdministratorSession::AdministratorSession( const UserCredentials & credentials ) : UserBase( "Administrator", credentials )
   {
-    _commandDispatch = { {"Run Reports",    generateReport     } };
+    _commandDispatch = {
+        { "Play Game", playGame },
+        { "Buy Game", buyGame },
+        { "Run Reports", generateReport },
+                         
+    };
   }
 
 
