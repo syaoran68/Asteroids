@@ -20,14 +20,23 @@ int main( /*int argc, char argv[] */ )
     std::cout << "\nInitialization completed successfully\n";
 
     char response;
-    do
+    std::cout << "Ready to transition into Operational State? (Q/Y/N) ";
+    std::cin >> response;
+    response = std::toupper( response, std::locale() );
+    while (response != 'Q' && response != 'N')
     {
-      std::cout << "Ready to transition into Operational State? (Q/Y/N) ";
-      std::cin >> response;
-      response = std::toupper( response, std::locale() );
-    } while( response != 'Y' && response != 'Q' );
+        do
+        {
+          response = std::toupper( response, std::locale() );
+          if( response == 'Y' ) userInterface->launch();
+          std::cout << "Would you like to re log back in? (Q/Y/N) ";
+          std::cin >> response;
+          response = std::toupper( response, std::locale() );
+        } while( response == 'Y' );
+    }
+     
 
-    if( response == 'Y' ) userInterface->launch();
+    
 
 
     std::cout << "\nProgram complete, initiating shutdown\n";

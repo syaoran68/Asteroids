@@ -148,4 +148,5 @@ namespace UI
 
     _logger << "Ending session and terminating";
   }
+
 }
