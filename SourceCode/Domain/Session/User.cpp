@@ -101,10 +101,10 @@ namespace Domain::User
         // stub for launching the game
         std::cout << "play game";
       }
-      else if( command == "Generate Report" )
+      else if( command == "Run Reports" )
       {
         // stub generating report
-        std::cout << "generate report";
+        results = "Report is Generated Please Download.";
       }
     return results;
   }

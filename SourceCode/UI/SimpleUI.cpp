@@ -119,30 +119,49 @@ namespace UI
       ******************************************************************************************************************************/
       if( selectedCommand == "Buy Game" )
       {
-        std::vector<std::string> parameters( 6 );
+        std::vector<std::string> parameters( 5 );
 
-        std::cout << " First Name: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[0] );
-        std::cout << " Last Name: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[1] );
-        std::cout << " Credit Card Number: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[2] );
-        std::cout << " Credit Card Expire Month: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[3] );
-        std::cout << " Credit Card Expire Year: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[4] );
-        std::cout << " Address: ";  std::cin >> std::ws;  std::getline( std::cin, parameters[5] );
+        std::cout << " First Name: ";
+        std::cin >> std::ws;
+        std::getline( std::cin, parameters[0] );
+        std::cout << " Last Name: ";
+        std::cin >> std::ws;
+        std::getline( std::cin, parameters[1] );
+        std::cout << " Credit Card Number: ";
+        std::cin >> std::ws;
+        std::getline( std::cin, parameters[2] );
+        std::cout << " Credit Card Expire Month: ";
+        std::cin >> std::ws;
+        std::getline( std::cin, parameters[3] );
+        std::cout << " Credit Card Expire Year: ";
+        std::cin >> std::ws;
+        std::getline( std::cin, parameters[4] );
+        std::cout << " Address: ";
+        std::cin >> std::ws;
+        std::getline( std::cin, parameters[5] );
 
-        
+
 
         auto results = sessionControl->executeCommand( selectedCommand, parameters );
         if( results.has_value() ) _logger << "Received reply: \"" + std::any_cast<const std::string &>( results ) + '"';
       }
-      else if (selectedCommand == "Play Game")
+      else if( selectedCommand == "Play Game" )
       {
-
       }
-      else if( selectedCommand == "Generate Report" )
+      else if( selectedCommand == "Run Reports" )
       {
+        std::vector<std::string> parameters( 3 );
 
+        std::cout << " Report Start Date: "; std::cin >> std::ws; std::getline( std::cin, parameters[0] );
+        std::cout << " Report End Date: "; std::cin >> std::ws; std::getline( std::cin, parameters[1] );
+        std::cout << " Report Type: "; std::cin >> std::ws; std::getline( std::cin, parameters[2] );
+
+        auto results = sessionControl->executeCommand( selectedCommand, parameters );
+
+        if( results.has_value() ) _logger << "Received reply: \"" + std::any_cast<const std::string &>( results ) + '"';
       }
-      else sessionControl->executeCommand( selectedCommand, {} );
-
+      else
+        sessionControl->executeCommand( selectedCommand, {} );
 
     } while( true );
 
