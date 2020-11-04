@@ -23,7 +23,7 @@ namespace Domain::PaymentSystem
 			struct   BadCommand     : SessionException   {using SessionException::SessionException;};
 
 			//creating the external link session
-			static std::unique_ptr<PaymentTransaction> createSession(const PaymentCredentials & paymentInfo );
+			static std::unique_ptr<PaymentSystemHandler> createSession(const PaymentCredentials & paymentInfo );
 
 			// virtual function operations
 			virtual std::vector<std::string> getCommands()                                                                        = 0;    // retrieves the list of actions (commands)
@@ -36,5 +36,6 @@ namespace Domain::PaymentSystem
             // Copy assignment operators, protected to prevent mix derived-type assignments
             PaymentSystemHandler & operator=( const PaymentSystemHandler & rhs ) = default;    // copy assignment
             PaymentSystemHandler & operator=( PaymentSystemHandler && rhs ) = default;         // move assignment
+            
 	};
 }

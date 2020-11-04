@@ -8,27 +8,40 @@
 
 namespace Domain::PaymentSystem
 {
-	PaymentSystemBase::PaymentSystemBase()
-	{
-          //_logger << "Session successfully initialized";
-    }
+  PaymentSystemBase::PaymentSystemBase()
+  {
+    //_logger << "Session successfully initialized";
+  }
 
-    std::any PaymentSystemBase::executeCommands( const std::string & command, const std::vector<std::string> & args )
+  std::vector<std::string> PaymentSystemBase::getCommands()
+  {
+    std::vector<std::string> availableCommands;
+
+    return availableCommands;
+  }
+
+
+  std::any PaymentSystemBase::executeCommand( const std::string & command, const std::vector<std::string> & args )
+  {
+    if( command == "Buy Game" )
     {
-
-        return std::any();
-    }
-
-    TransactionSession::TransactionSession( const PaymentCredentials & credentials ) : PaymentSystemBase( "Administrator", credentials )
-    {
-      _commandDispatch = {
-          //{ "Play Game", playGame },
-          //{ "Buy Game", buyGame },
-          //{ "Run Reports", generateReport },
-
-      };
+      PaymentTransaction paymentDetails;
+      return paymentDetails;
     }
 
 
 
-}
+    return std::any();
+  }
+
+  PaymentSystemBase::~PaymentSystemBase() noexcept
+  {
+
+  }
+
+  TransactionSession::TransactionSession( PaymentCredentials & credentials )
+  {
+
+  }
+
+}    // namespace Domain::PaymentSystem

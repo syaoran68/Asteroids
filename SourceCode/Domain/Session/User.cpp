@@ -1,6 +1,7 @@
 
 #include "Domain/Session/User.hpp"
-
+#include "Domain/Session/PaymentSystem.hpp"
+#include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 #include <string>
 #include <any>
 #include <vector>
@@ -35,6 +36,8 @@ namespace  // anonymous (private) working area
 
 namespace Domain::User
 {
+  using TechnicalServices::Persistence::PaymentCredentials;
+
   UserBase::UserBase( const std::string & description, const UserCredentials & credentials ) : _credentials( credentials ), _name( description )
   {
     _logger << "Session \"" + _name + "\" being used and has been successfully initialized";
@@ -66,10 +69,32 @@ namespace Domain::User
 
   std::any UserBase::executeCommand( const std::string & command, const std::vector<std::string> & args )
   {
+      std::string results = "";
       if (command == "Buy Game")
       {
         // send to external payment system
+        std::unique_ptr<Domain::PaymentSystem::PaymentSystemHandler> sessionControl;
+
+        PaymentCredentials paymentInfo;
+        paymentInfo.firstName = args[0];
+        paymentInfo.lastName  = args[1];
+        paymentInfo.creditCardNumber = args[2];
+        paymentInfo.expMonth         = args[3];
+        paymentInfo.expYear          = args[4];
+        paymentInfo.address          = args[5];
+
+
+        sessionControl = Domain::PaymentSystem::PaymentSystemHandler::createSession( paymentInfo );
+
+        // STUB would execute command to buy game and return TransactionSession with Transaction ID
         
+        //std::any transaction = sessionControl->executeCommand( command, args );
+        if (
+            //transaction.has_value()
+            true)
+        {
+          results = "Game Purchased!";
+        }
       }
       else if (command == "Play Game")
       {
@@ -81,7 +106,6 @@ namespace Domain::User
         // stub generating report
         std::cout << "generate report";
       }
-      std::string results = "testing";
     return results;
   }
 

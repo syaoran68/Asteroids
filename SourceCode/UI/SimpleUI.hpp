@@ -2,7 +2,6 @@
 
 #include <memory>    // std::unique_ptr
 
-#include "Domain/Library/MaintainBooksHandler.hpp"
 #include "TechnicalServices/Logging/LoggerHandler.hpp"
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 #include "UI/UserInterfaceHandler.hpp"
@@ -37,7 +36,7 @@ namespace UI
 
     private:
       // These smart pointers hold pointers to lower architectural layer's interfaces
-      std::unique_ptr<Domain::Library::MaintainBooksHandler>                _bookHandler;
+      
 
       std::unique_ptr<TechnicalServices::Logging::LoggerHandler>            _loggerPtr;
       TechnicalServices::Persistence::PersistenceHandler                  & _persistentData;

@@ -31,6 +31,8 @@ int main( /*int argc, char argv[] */ )
 
 
     std::cout << "\nProgram complete, initiating shutdown\n";
+
+    system( "pause" );
   }
 
 

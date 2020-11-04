@@ -22,9 +22,9 @@ namespace TechnicalServices::Persistence
   {
     std::string firstName;
     std::string lastName;
-    int         creditCardNumber;
-    int         expMonth;
-    int         expYear;
+    std::string creditCardNumber;
+    std::string expMonth;
+    std::string expYear;
     std::string address;
   };
 
