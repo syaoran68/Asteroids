@@ -1,6 +1,6 @@
 
 #include "Domain/Session/User.hpp"
-#include "Domain/Session/PaymentSystem.hpp"
+#include "Domain/Session/PaymentSystem/PaymentSystem.hpp"
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 #include <string>
 #include <any>

@@ -119,7 +119,7 @@ namespace UI
       ******************************************************************************************************************************/
       if( selectedCommand == "Buy Game" )
       {
-        std::vector<std::string> parameters( 5 );
+        std::vector<std::string> parameters( 6 );
 
         std::cout << " First Name: ";
         std::cin >> std::ws;

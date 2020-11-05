@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Domain/Session/PaymentSystemHandler.hpp"
+#include "Domain/Session/PaymentSystem/PaymentSystemHandler.hpp"
 
 namespace Domain::PaymentSystem
 {
