@@ -1,6 +1,7 @@
 
 #include "Domain/Session/User.hpp"
-#include "Domain/Session/PaymentSystem/PaymentSystem.hpp"
+#include "Domain/Session/ReportSystem/ReportSystemHandler.hpp"
+#include "Domain/Session/PaymentSystem/PaymentSystemHandler.hpp"
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 #include <string>
 #include <any>
@@ -25,18 +26,10 @@ namespace  // anonymous (private) working area
   }
 }    // anonymous (private) working area
 
-
-
-
-
-
-
-
-
-
 namespace Domain::User
 {
   using TechnicalServices::Persistence::PaymentCredentials;
+  using TechnicalServices::Persistence::ReportQuery;
 
   UserBase::UserBase( const std::string & description, const UserCredentials & credentials ) : _credentials( credentials ), _name( description )
   {
@@ -104,7 +97,22 @@ namespace Domain::User
       else if( command == "Run Reports" )
       {
         // stub generating report
+
+
+        std::unique_ptr<Domain::ReportSystem::ReportSystemHandler> sessionControl;
+
+        ReportQuery reportRequest;
+        reportRequest.reportEndDate = args[1];
+        reportRequest.reportStartDate = args[0];
+        reportRequest.reportType      = args[2];
+
+        sessionControl = Domain::ReportSystem::ReportSystemHandler::createSession( reportRequest );
+
+
+
         results = "Report is Generated Please Download.";
+
+
       }
     return results;
   }

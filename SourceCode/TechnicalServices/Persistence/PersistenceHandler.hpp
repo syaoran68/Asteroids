@@ -35,6 +35,19 @@ namespace TechnicalServices::Persistence
     PaymentCredentials paymentData;
   };
 
+  struct ReportQuery
+  {
+    std::string reportStartDate;
+    std::string reportEndDate;
+    std::string reportType;
+
+  };
+
+  struct ReportResponse
+  {
+    std::string ReportInByteString;
+
+  };
 
 
   // Persistence Package within the Technical Services Layer Abstract class

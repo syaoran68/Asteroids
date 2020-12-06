@@ -27,7 +27,9 @@ namespace Domain::User
       // Pure virtual destructor helps force the class to be abstract, but must still be implemented
       ~UserBase() noexcept override = 0;
 
-  protected: 
+  protected:
+      bool gamePurchased = false;
+      int  transactionID = 0;
   public:  // Dispatched functions need access to these attributes, so for now make these public instead of protected
     // Types
     using DispatchTable = std::map<std::string, std::any (*)( Domain::User::UserBase &, const std::vector<std::string> & )>;
