@@ -99,7 +99,6 @@ namespace Domain::User
         // stub generating report
 
 
-        //std::unique_ptr<Domain::ReportSystem::ReportSystemHandler> sessionControl;
 
         ReportQuery reportRequest;
         reportRequest.reportEndDate = args[1];

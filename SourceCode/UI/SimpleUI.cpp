@@ -157,7 +157,7 @@ namespace UI
 
         std::cout << " Report Start Date: "; std::cin >> std::ws; std::getline( std::cin, parameters[0] );
         std::cout << " Report End Date: "; std::cin >> std::ws; std::getline( std::cin, parameters[1] );
-        std::cout << " Report Type: "; std::cin >> std::ws; std::getline( std::cin, parameters[2] );
+        std::cout << " Report Type(Daily / Monthly): "; std::cin >> std::ws; std::getline( std::cin, parameters[2] );
 
         auto results = sessionControl->executeCommand( selectedCommand, parameters );
 
