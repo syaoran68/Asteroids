@@ -7,10 +7,6 @@
 
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 
-/*******************************************************************************
-**          PAYMENTS
-*******************************************************************************/
-// Payment Abstract Product Interface
 namespace Domain
 {
     using TechnicalServices::Persistence::ReportQuery;
@@ -33,7 +29,7 @@ namespace Domain
   inline ReportSystemHandler::~ReportSystemHandler()
   {}
 
-  // Daily Payment Concrete Product
+  // Daily Report
   class Daily : public ReportSystemHandler
   {
   public:
@@ -60,7 +56,7 @@ namespace Domain
   };
   long unsigned Daily::_counter = 0;  
 
- 
+   // Daily Report
   class Monthly : public ReportSystemHandler
   {
   public:
@@ -93,7 +89,7 @@ namespace Domain
     // Must be static
     static ReportFactory * createFactory( std::string factoryPreference );
 
-    // All Payment Factories have these functions
+    //every extended class has to have this function
     virtual ReportSystemHandler * createReports( ReportQuery reportDetails ) = 0;
   };
 
@@ -106,7 +102,7 @@ namespace Domain
     }
   };
 
-  // Credit Concrete Factory
+  // Monthly Concrete Factory
   struct MonthlyFactory : ReportFactory
   {
     Monthly * createReports( ReportQuery reportDetails ) override

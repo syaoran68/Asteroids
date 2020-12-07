@@ -12,7 +12,7 @@ namespace Domain
   class PaymentSystemHandler
   {
   public:
-    virtual void processPayment() = 0;
+    virtual bool processPayment() = 0;
   };
 
   // Legacy component (Adaptee)
@@ -61,11 +61,31 @@ namespace Domain
       std::cout << "New Payment Transaction ready.\n";
     }
 
-    void processPayment()
+    bool processPayment()
     {
       std::cout << "Processing Transaction\n";
-      paypalProcess();
-      chaseProcess();
+      if (paypalProcess())
+      {
+        std::cout << "Transaction Processed.\n";
+        return true;
+      }
+      else
+      {
+        std::cout << "Transaction failed.\n";
+      }
+          
+      if (chaseProcess())
+      {
+        std::cout << "Transaction Processed.\n";
+        return true;
+      }
+      else
+      {
+        std::cout << "Transaction failed.\n";
+      }
+
+
+      return false;
     }
   };
 }

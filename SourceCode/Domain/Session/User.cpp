@@ -1,6 +1,6 @@
 
 #include "Domain/Session/User.hpp"
-#include "ReportSystem/ReportSystem.hpp"
+#include "ReportSystem/ReportSystemHandler.hpp"
 #include "PaymentSystem/PaymentSystemHandler.hpp"
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 #include <string>
@@ -80,15 +80,14 @@ namespace Domain::User
        
         //Adaptor for processing multiple payment systems
         PaymentSystemHandler * newTransaction = new PaymentAdapter( paymentInfo );
-        newTransaction->processPayment();
 
         
-        if (
-            //transaction.has_value()
-            true)
+        if( newTransaction->processPayment() )
         {
           results = "Game Purchased!";
         }
+        else
+          results = "Transaction failed.";
       }
       else if (command == "Play Game")
       {
