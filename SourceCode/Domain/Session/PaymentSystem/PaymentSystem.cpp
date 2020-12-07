@@ -25,8 +25,7 @@ namespace Domain::PaymentSystem
   {
     if( command == "Buy Game" )
     {
-      PaymentTransaction paymentDetails;
-      return paymentDetails;
+      
 
       
     }

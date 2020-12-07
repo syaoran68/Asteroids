@@ -11,7 +11,7 @@
 
 namespace Domain::ReportSystem
 {
-  // might use the persistence layer to hold the credit card information
+  
   using TechnicalServices::Persistence::ReportQuery;
 
   class ReportSystemHandler

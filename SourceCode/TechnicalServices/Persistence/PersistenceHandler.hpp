@@ -26,6 +26,7 @@ namespace TechnicalServices::Persistence
     std::string expMonth;
     std::string expYear;
     std::string address;
+    std::string type;
   };
 
 

@@ -119,7 +119,7 @@ namespace UI
       ******************************************************************************************************************************/
       if( selectedCommand == "Buy Game" )
       {
-        std::vector<std::string> parameters( 6 );
+        std::vector<std::string> parameters( 7 );
 
         std::cout << " First Name: ";
         std::cin >> std::ws;
@@ -139,6 +139,9 @@ namespace UI
         std::cout << " Address: ";
         std::cin >> std::ws;
         std::getline( std::cin, parameters[5] );
+        std::cout << " Type: ";
+        std::cin >> std::ws;
+        std::getline( std::cin, parameters[6] );
 
 
 

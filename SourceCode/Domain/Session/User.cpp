@@ -66,7 +66,7 @@ namespace Domain::User
       if (command == "Buy Game")
       {
         // send to external payment system
-        std::unique_ptr<Domain::PaymentSystem::PaymentSystemHandler> sessionControl;
+        
 
         PaymentCredentials paymentInfo;
         paymentInfo.firstName = args[0];
@@ -75,9 +75,11 @@ namespace Domain::User
         paymentInfo.expMonth         = args[3];
         paymentInfo.expYear          = args[4];
         paymentInfo.address          = args[5];
+        paymentInfo.type             = args[6]; 
 
-
-        sessionControl = Domain::PaymentSystem::PaymentSystemHandler::createSession( paymentInfo );
+        PaymentFactory * paymentFac = PaymentFactory::createFactory( paymentInfo.type );
+        Payment *        payTrans   = paymentFac->createPayment( paymentInfo );
+        payTrans->open();
 
         // STUB would execute command to buy game and return TransactionSession with Transaction ID
         
@@ -108,7 +110,7 @@ namespace Domain::User
 
         sessionControl = Domain::ReportSystem::ReportSystemHandler::createSession( reportRequest );
 
-
+        
 
         results = "Report is Generated Please Download.";
 

@@ -1,41 +1,134 @@
 #pragma once
-
+//#include "Domain/Session/SessionBase.hpp"
 #include <any>
-#include <memory>      // unique_ptr
-#include <stdexcept>   // runtime_error
+#include <iostream>
+#include <new>
+#include <stdexcept>
 #include <string>
-#include <vector>
 
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 
-namespace Domain::PaymentSystem
+/*******************************************************************************
+**          PAYMENTS
+*******************************************************************************/
+// Payment Abstract Product Interface
+namespace Domain
 {
-	// might use the persistence layer to hold the credit card information
-	
-	using TechnicalServices::Persistence::PaymentCredentials;
-	using TechnicalServices::Persistence::PaymentTransaction;
+    using TechnicalServices::Persistence::PaymentCredentials;
 
-	class PaymentSystemHandler
-	{
-        public:
-			// Exceptions
-			struct SessionException : std::runtime_error {using runtime_error   ::runtime_error;   };
-			struct   BadCommand     : SessionException   {using SessionException::SessionException;};
+    class Payment
+  {
+  public:
+    Payment( PaymentCredentials paymentDetails )
+      : _paymentDetails(paymentDetails)
+    {}
 
-			//creating the external link session
-			static std::unique_ptr<PaymentSystemHandler> createSession(const PaymentCredentials & paymentInfo );
+    virtual void open() = 0;
 
-			// virtual function operations
-			virtual std::vector<std::string> getCommands()                                                                        = 0;    // retrieves the list of actions (commands)
-            virtual std::any                 executeCommand( const std::string & command, const std::vector<std::string> & args ) = 0;    // Throws BadCommand
+    virtual ~Payment() = 0; 
 
-			//Destructor
-            virtual ~PaymentSystemHandler() noexcept = 0;
+  protected:
+    PaymentCredentials _paymentDetails;
+  };
 
-		protected:
-            // Copy assignment operators, protected to prevent mix derived-type assignments
-            PaymentSystemHandler & operator=( const PaymentSystemHandler & rhs ) = default;    // copy assignment
-            PaymentSystemHandler & operator=( PaymentSystemHandler && rhs ) = default;         // move assignment
-            
-	};
-}
+  inline Payment::~Payment()
+  {}
+
+  // Visa Payment Concrete Product
+  class Visa : public Payment
+  {
+  public:
+    Visa( PaymentCredentials paymentDetails )
+      : Payment( paymentDetails )
+    {
+      std::cout << "Created Amazon Credit Card payment number " << ( _paymentID = ++_counter ) << '\n';
+    }
+
+    void open() override
+    {
+        //open external transaction and process the transaction 
+    }
+
+    ~Visa() override
+    {
+      std::cout << "Destroyed Amazon Credit Card payment number " << _paymentID << '\n';
+    }
+
+  private:
+    static long unsigned _counter;  
+    long unsigned        _paymentID = 0;
+  };
+  long unsigned Visa::_counter = 0;  
+
+ 
+  class Amex : public Payment
+  {
+  public:
+    Amex( PaymentCredentials paymentDetails )
+      : Payment( paymentDetails )
+    {
+      std::cout << "Created Amex Credit Card payment number " << ( _paymentID = ++_counter ) << '\n';
+    }
+
+    void open() override
+    {
+      //open external transaction and process the transaction 
+    }
+
+    ~Amex() override
+    {
+      std::cout << "Destroyed Amex Credit Credit payment number " << _paymentID << '\n';
+    }
+
+  private:
+    static long unsigned _counter;
+    long unsigned        _paymentID = 0;
+  };
+  long unsigned Amex::_counter = 0;
+
+//base payment factory
+  struct PaymentFactory
+  {
+    // Must be static
+    static PaymentFactory * createFactory( std::string factoryPreference );
+
+    // All Payment Factories have these functions
+    virtual Payment * createPayment( PaymentCredentials paymentDetails ) = 0;
+  };
+
+  // Visa Concrete Factory
+  struct VisaFactory : PaymentFactory
+  {
+    Visa * createPayment( PaymentCredentials paymentDetails ) override
+    {
+      return new Visa( paymentDetails );
+    }
+  };
+
+  // Credit Concrete Factory
+  struct AmexFactory : PaymentFactory
+  {
+    Amex * createPayment( PaymentCredentials paymentDetails ) override
+    {
+      return new Amex( paymentDetails );
+    }
+  };
+
+  PaymentFactory * PaymentFactory::createFactory( std::string factoryPreference )
+  {
+
+      if (factoryPreference == "Visa")
+      {
+        return new VisaFactory();
+      }
+      else if (factoryPreference == "Amex")
+      {
+        return new AmexFactory();
+      }
+    else
+    {
+      // error - Preference not support.
+      throw std::domain_error( "Unsupported factory preference encountered: " + factoryPreference );
+    }
+  }
+}    // namespace

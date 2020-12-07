@@ -14,21 +14,25 @@ namespace Domain::ReportSystem
 
   {
   public:
-    ReportSystemBase();
+    ReportSystemBase(const std::string description, const ReportQuery & report);
 
     // Operations
-    std::vector<std::string> getCommands();
-    std::any                 executeCommand( const std::string & command, const std::vector<std::string> & args );
+    std::vector<std::string> getCommands()                                                                          override;
+    std::any                 executeCommand( const std::string & command, const std::vector<std::string> & args )   override;
 
 
 
     // Destructor
     // Pure virtual destructor helps force the class to be abstract, but must still be implemented
-    ~ReportSystemBase() noexcept = 0;
+    ~ReportSystemBase() noexcept override = 0;
 
   protected:
+
+   public:
+    using DispatchTable = std::map<std::string, std::any (*)( Domain::ReportSystem::ReportSystemBase &, const std::vector<std::string> & )>;
+    DispatchTable _commandDispatch;
   };
 
-
+  struct ReportSession : ReportSystemBase{ ReportSession( const ReportQuery & report );};
 
 }    // namespace Domain::PaymentSystem
