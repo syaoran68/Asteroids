@@ -1,7 +1,6 @@
 
 #include "Domain/Session/User.hpp"
 #include "Domain/Session/ReportSystem/ReportSystemHandler.hpp"
-#include "Domain/Session/PaymentSystem/PaymentSystemHandler.hpp"
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 #include <string>
 #include <any>
@@ -77,13 +76,8 @@ namespace Domain::User
         paymentInfo.address          = args[5];
         paymentInfo.type             = args[6]; 
 
-        PaymentFactory * paymentFac = PaymentFactory::createFactory( paymentInfo.type );
-        Payment *        payTrans   = paymentFac->createPayment( paymentInfo );
-        payTrans->open();
-
-        // STUB would execute command to buy game and return TransactionSession with Transaction ID
         
-        //std::any transaction = sessionControl->executeCommand( command, args );
+        
         if (
             //transaction.has_value()
             true)
@@ -101,14 +95,16 @@ namespace Domain::User
         // stub generating report
 
 
-        std::unique_ptr<Domain::ReportSystem::ReportSystemHandler> sessionControl;
+        //std::unique_ptr<Domain::ReportSystem::ReportSystemHandler> sessionControl;
 
         ReportQuery reportRequest;
         reportRequest.reportEndDate = args[1];
         reportRequest.reportStartDate = args[0];
         reportRequest.reportType      = args[2];
 
-        sessionControl = Domain::ReportSystem::ReportSystemHandler::createSession( reportRequest );
+        ReportFactory * reportFac = ReportFactory::createFactory( reportRequest.reportType );
+        Reports *       reportGeneration = reportFac->createReports( reportRequest );
+        reportGeneration->open();
 
         
 

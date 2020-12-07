@@ -1,45 +1,135 @@
-
 #pragma once
-
 #include <any>
-#include <memory>       // unique_ptr
-#include <stdexcept>    // runtime_error
+#include <iostream>
+#include <new>
+#include <stdexcept>
 #include <string>
-#include <vector>
 
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 
-namespace Domain::ReportSystem
+/*******************************************************************************
+**          PAYMENTS
+*******************************************************************************/
+// Payment Abstract Product Interface
+namespace Domain
 {
-  
-  using TechnicalServices::Persistence::ReportQuery;
+    using TechnicalServices::Persistence::ReportQuery;
 
-  class ReportSystemHandler
+    class Reports
   {
   public:
-    // Exceptions
-    struct SessionException : std::runtime_error
-    {
-      using runtime_error ::runtime_error;
-    };
-    struct BadCommand : SessionException
-    {
-      using SessionException::SessionException;
-    };
+    Reports( ReportQuery reportDetails )
+      : _reportDetails(reportDetails)
+    {}
 
-    //creating the external link session
-    static std::unique_ptr<ReportSystemHandler> createSession( const ReportQuery & paymentInfo );
+    virtual void open() = 0;
 
-    // virtual function operations
-    virtual std::vector<std::string> getCommands()                                                                        = 0;    // retrieves the list of actions (commands)
-    virtual std::any                 executeCommand( const std::string & command, const std::vector<std::string> & args ) = 0;    // Throws BadCommand
-
-    //Destructor
-    virtual ~ReportSystemHandler() noexcept = 0;
+    virtual ~Reports() = 0; 
 
   protected:
-    // Copy assignment operators, protected to prevent mix derived-type assignments
-    ReportSystemHandler & operator=( const ReportSystemHandler & rhs ) = default;    // copy assignment
-    ReportSystemHandler & operator=( ReportSystemHandler && rhs ) = default;         // move assignment
+    ReportQuery _reportDetails;
   };
-}    // namespace Domain::PaymentSystem
+
+  inline Reports::~Reports()
+  {}
+
+  // Daily Payment Concrete Product
+  class Daily : public Reports
+  {
+  public:
+    Daily( ReportQuery reportDetails )
+      : Reports( reportDetails )
+    {
+      std::cout << "Created  Daily report session " << '\n';
+    }
+
+    void open() override
+    {
+      //open db to grab data for processing logic on report
+      std::cout << "Processing Daily Report" << '\n';
+    }
+
+    ~Daily() override
+    {
+      std::cout << "Destroyed Daily report session " << '\n';
+    }
+
+  private:
+    static long unsigned _counter;  
+    std::string          _byteStringArray;
+  };
+  long unsigned Daily::_counter = 0;  
+
+ 
+  class Monthly : public Reports
+  {
+  public:
+    Monthly( ReportQuery reportDetails )
+      : Reports( reportDetails )
+    {
+      std::cout << "Created Monthly Report Session " << '\n';
+    }
+
+    void open() override
+    {
+      //open db to grab data for processing logic on report
+        std::cout << "Processing Monthly Report" << '\n';
+    }
+
+    ~Monthly() override
+    {
+      std::cout << "Destroyed Monthly Report Session  " << '\n';
+    }
+
+  private:
+    static long unsigned _counter;
+    std::string          _byteStringArray;
+  };
+  long unsigned Monthly::_counter = 0;
+
+//base payment factory
+  struct ReportFactory
+  {
+    // Must be static
+    static ReportFactory * createFactory( std::string factoryPreference );
+
+    // All Payment Factories have these functions
+    virtual Reports * createReports( ReportQuery reportDetails ) = 0;
+  };
+
+  // Daily Concrete Factory
+  struct DailyFactory : ReportFactory
+  {
+    Daily * createReports( ReportQuery reportDetails ) override
+    {
+      return new Daily( reportDetails );
+    }
+  };
+
+  // Credit Concrete Factory
+  struct MonthlyFactory : ReportFactory
+  {
+    Monthly * createReports( ReportQuery reportDetails ) override
+    {
+      return new Monthly( reportDetails );
+    }
+  };
+
+  ReportFactory * ReportFactory::createFactory( std::string factoryPreference )
+  {
+
+      if (factoryPreference == "Daily")
+      {
+        return new DailyFactory();
+      }
+      else if (factoryPreference == "Monthly")
+      {
+        return new MonthlyFactory();
+      }
+    else
+    {
+      // error - Preference not support.
+      throw std::domain_error( "Unsupported factory preference encountered: " + factoryPreference );
+    }
+  }
+}    // namespace
