@@ -1,6 +1,7 @@
 
 #include "Domain/Session/User.hpp"
-#include "Domain/Session/ReportSystem/ReportSystemHandler.hpp"
+#include "ReportSystem/ReportSystem.hpp"
+#include "PaymentSystem/PaymentSystemHandler.hpp"
 #include "TechnicalServices/Persistence/PersistenceHandler.hpp"
 #include <string>
 #include <any>
@@ -76,7 +77,11 @@ namespace Domain::User
         paymentInfo.address          = args[5];
         paymentInfo.type             = args[6]; 
 
-        
+       
+        //Adaptor for processing multiple payment systems
+        PaymentSystemHandler * newTransaction = new PaymentAdapter( paymentInfo );
+        newTransaction->processPayment();
+
         
         if (
             //transaction.has_value()
@@ -103,7 +108,7 @@ namespace Domain::User
         reportRequest.reportType      = args[2];
 
         ReportFactory * reportFac = ReportFactory::createFactory( reportRequest.reportType );
-        Reports *       reportGeneration = reportFac->createReports( reportRequest );
+        ReportSystemHandler * reportGeneration = reportFac->createReports( reportRequest );
         reportGeneration->open();
 
         

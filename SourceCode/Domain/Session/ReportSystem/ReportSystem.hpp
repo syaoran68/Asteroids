@@ -15,30 +15,30 @@ namespace Domain
 {
     using TechnicalServices::Persistence::ReportQuery;
 
-    class Reports
+    class ReportSystemHandler
   {
   public:
-    Reports( ReportQuery reportDetails )
+    ReportSystemHandler( ReportQuery reportDetails )
       : _reportDetails(reportDetails)
     {}
 
     virtual void open() = 0;
 
-    virtual ~Reports() = 0; 
+    virtual ~ReportSystemHandler() = 0; 
 
   protected:
     ReportQuery _reportDetails;
   };
 
-  inline Reports::~Reports()
+  inline ReportSystemHandler::~ReportSystemHandler()
   {}
 
   // Daily Payment Concrete Product
-  class Daily : public Reports
+  class Daily : public ReportSystemHandler
   {
   public:
     Daily( ReportQuery reportDetails )
-      : Reports( reportDetails )
+      : ReportSystemHandler( reportDetails )
     {
       std::cout << "Created  Daily report session " << '\n';
     }
@@ -61,11 +61,11 @@ namespace Domain
   long unsigned Daily::_counter = 0;  
 
  
-  class Monthly : public Reports
+  class Monthly : public ReportSystemHandler
   {
   public:
     Monthly( ReportQuery reportDetails )
-      : Reports( reportDetails )
+      : ReportSystemHandler( reportDetails )
     {
       std::cout << "Created Monthly Report Session " << '\n';
     }
@@ -94,7 +94,7 @@ namespace Domain
     static ReportFactory * createFactory( std::string factoryPreference );
 
     // All Payment Factories have these functions
-    virtual Reports * createReports( ReportQuery reportDetails ) = 0;
+    virtual ReportSystemHandler * createReports( ReportQuery reportDetails ) = 0;
   };
 
   // Daily Concrete Factory
